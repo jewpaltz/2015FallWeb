@@ -10,10 +10,15 @@
         array( 'Name' => 'Snack', 'Time' => strtotime("now + 1 hour"), Callories => 400 ),
         array( 'Name' => 'Dinner', 'Time' => strtotime("6pm"), Callories => 400 ),
         );
+        
+    $food[] = $_REQUEST;
+    
     $total = 0;
     foreach ($food as $meal) {
         $total += $meal['Callories'];
     }
+    
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +53,7 @@
             </div>
       <div class="row">
         <div class="col-md-8 col-xs-10">
-            <a href="#" class="btn btn-success">
+            <a href="edit.php" class="btn btn-success">
                 <i class="glyphicon glyphicon-plus"></i>
                 New Record
             </a>
