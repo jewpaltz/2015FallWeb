@@ -3,8 +3,7 @@ ini_set('display_errors', 1);
 date_default_timezone_set("America/New_York");
 
 function GetConnection(){
-	//include __DIR__ . '/_password.php';
-	$sql_password = '1212';
+	include 'password.php';
 	return new mysqli('localhost','blabla',$sql_password,'c9');
 }
 
@@ -28,14 +27,7 @@ function FetchAll($sql){
 				$ret[] = $rs;
 			}			
 		}
+		$conn->close();
 		
 		return $ret;	
-}
-
-function escape_all($row, $conn){
-	$row2 = array();
-	foreach ($row as $key => $value) {
-		$row2[$key] = $conn->real_escape_string($value);
-	}
-	return $row2;
 }
