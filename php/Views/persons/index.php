@@ -50,12 +50,6 @@
             $.get(this.href + "&format=plain").then(function(data){
                 $("#myDialog .modal-content").html(data);
                 $("#myDialog").modal('show');
-                $("#myDialog form").submit(function(e){
-                    e.preventDefault();
-                    $.post(this.action + "&format=json", $(this).serialize(), null, 'json').then(function(data){
-                        $("#myDialog .modal-content").append('<div class="alert alert-danger">' + data.Name + ' can not be deleted</div>')
-                    });
-                });
             });
             return false;
         });
