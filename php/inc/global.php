@@ -31,3 +31,12 @@ function FetchAll($sql){
 		
 		return $ret;	
 }
+
+
+function escape_all($row, $conn){
+	$row2 = array();
+	foreach ($row as $key => $value) {
+		$row2[$key] = $conn->real_escape_string($value);
+	}
+	return $row2;
+}

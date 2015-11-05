@@ -7,7 +7,7 @@
   </div>
   	<div class="modal-body">
         
-        <? my_print($errors); ?>
+        <?php include __DIR__ . '/../shared/_Errors.php'; ?>
         
   		<h5>Are you sure you want to delete <?=$model['Name']?>?</h5>
   		
