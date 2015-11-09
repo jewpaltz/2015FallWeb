@@ -38,7 +38,7 @@ class Person {
 		{
 			$errors = array();
 			if(empty($row['Name'])) $errors['Name'] = "is required";
-			if(strtotime($row['Birthday']) > time()) $errors['Birthday'] = "Birthdays must be in the past";
+			if(strtotime($row['Birthday']) > time()) $errors['Birthday'] = "must be in the past";
 			
 			return count($errors) > 0 ? $errors : false ;
 		}
