@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Food Intake</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  </head>
+  <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+      
+    <div class="container">
+        <h1>My Website</h1>
+              <nav class="navbar navbar-default navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Project name</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Contact</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li class="dropdown-header">Nav header</li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">One more separated link</a></li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
+              <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+            <div id="view"></div>
+            
+    </div>
+    
+    <!--      ### Tech Stuff ###      -->
+    <div class="modal fade" id="myDialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            var editTemplate = Handlebars.compile($("#edit-tmpl").html());
+            var indexTemplate = Handlebars.compile($("#index-tmpl").html());
+            $("#view").on("click", ".ajax", function(){
+                $.get(this.href).then(function(data){
+                    $("#myDialog .modal-content").html(data);
+                    $("#myDialog").modal('show');
+                });
+                return false;
+            });
+            $("#view").on("click", ".edit", function(){
+                var $self = $(this);
+                $.getJSON(this.href).then(function(data){
+                    var html = editTemplate(data);
+                    var $tr = $self.closest("tr").after(html).hide()
+                });
+                return false;
+            });
+            $.getJSON("/person").then(function(data){
+                    var html = indexTemplate({rows: data});
+                    $("#view").html(html);
+            });
+        });
+    </script>
+    <script type="text/template" id="edit-tmpl" >
+        <tr>
+           <td><input type="text" name="Name" class="form-control" placeholder="Name" value="{{Name}}" /></td>
+           <td><input type="text" name="Birthday" class="form-control" placeholder="Birthday" value="{{Birthday}}" /></td>
+           <td>
+             <input type="submit" value="Submit" class="btn btn-primary"/>
+             <input type="hidden" name="id" value="{{id}}" /> 
+           </td>
+        </tr>
+    </script>
+    
+    <script type="text/template" id="index-tmpl" >
+        <a href="/persons/create" class="btn btn-success ajax">
+            <i class="glyphicon glyphicon-plus"></i>
+            New Record
+        </a>
+        <a href="#" class="btn btn-danger">
+            <i class="glyphicon glyphicon-trash"></i>
+            Delete All
+            <span class="badge">{{rows.length}}</span>
+        </a>
+        <br />
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Actions</th>
+                    <th>Name</th>
+                    <th>Birthday</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each rows}}
+                    <tr>
+                          <th scope="row">
+                            <div class="btn-group" role="group" aria-label="...">
+                              <a href="" title="View" class="btn btn-default btn-xs ajax"><i class="glyphicon glyphicon-eye-open"></i></a>
+                              <a href="/person/{{id}}" title="Edit" class="btn btn-default btn-xs edit"><i class="glyphicon glyphicon-edit"></i></a>
+                              <a href="/person/{{id}}" title="Delete" class="btn btn-default btn-xs ajax"><i class="glyphicon glyphicon-trash"></i></a>
+                            </div>
+                          </th>
+                        <td>{{Name}}</td>
+                        <td>{{Birthday}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </script>
+
+  </body>
+</html>
