@@ -1,6 +1,7 @@
 var mysql = require("mysql");
 
 module.exports =  {
+    blank: function(){ return {} },
     get: function(id, ret){
         var conn = GetConnection();
         var sql = 'SELECT * FROM 2015Fall_Persons ';
@@ -8,24 +9,36 @@ module.exports =  {
           sql += " WHERE id = " + id;
         }
         conn.query(sql, function(err,rows){
-          if(err) throw err;
-          ret(rows);
+          ret(err,rows);
           conn.end();
         });        
     },
     delete: function(id, ret){
         var conn = GetConnection();
-        conn.query('SELECT * FROM 2015Fall_Persons',function(err,rows){
-          if(err) throw err;
-          ret(rows);
+        conn.query("DELETE FROM 2015Fall_Persons WHERE id = " + id, function(err,rows){
+          ret(err);
           conn.end();
         });        
     },
     save: function(row, ret){
+        var sql;
         var conn = GetConnection();
-        conn.query('SELECT * FROM 2015Fall_Persons',function(err,rows){
-          if(err) throw err;
-          ret(rows);
+        //  TODO Sanitize
+        if (row.id) {
+				  sql = " Update 2015Fall_Persons "
+							+ " Set Name=?, Birthday=? "
+						  + " WHERE id = ? ";
+			  }else{
+				  sql = "INSERT INTO 2015Fall_Persons "
+						  + " (Name, Birthday, created_at) "
+						  + "VALUES (?, ?, Now() ) ";				
+			  }
+
+        conn.query(sql, [row.Name, row.Birthday, row.id],function(err,data){
+          if(!err && !row.id){
+            row.id = data.insertId;
+          }
+          ret(err, row);
           conn.end();
         });        
     },
