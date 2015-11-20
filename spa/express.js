@@ -5,6 +5,7 @@ var person = require("./Model/person");
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.get("/person", function(req, res){
   
@@ -27,6 +28,10 @@ app.get("/person", function(req, res){
     return;
   }
   person.save(req.body, function(err, row){
+      if(err){
+        res.status(500).send(err);
+        return;
+      }
     res.send(row);
   })
 })

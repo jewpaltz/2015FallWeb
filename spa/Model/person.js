@@ -30,8 +30,8 @@ module.exports =  {
 						  + " WHERE id = ? ";
 			  }else{
 				  sql = "INSERT INTO 2015Fall_Persons "
-						  + " (Name, Birthday, created_at) "
-						  + "VALUES (?, ?, Now() ) ";				
+						  + " (Name, Birthday, created_at, TypeId) "
+						  + "VALUES (?, ?, Now(), 6 ) ";				
 			  }
 
         conn.query(sql, [row.Name, row.Birthday, row.id],function(err,data){
