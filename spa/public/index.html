@@ -10,13 +10,9 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   </head>
-<<<<<<< HEAD
-  <body ng-app="app" ng-controller="main as main">
-=======
   <body ng-app='app' ng-controller="person as vm">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
->>>>>>> jquery
       
     <div class="container">
         <h1>My Website</h1>
@@ -57,51 +53,7 @@
         </div><!--/.container-fluid -->
       </nav>
 
-<<<<<<< HEAD
-            <div>
-                <a class="btn btn-success create1" ng-click="main.create()">
-                    <i class="glyphicon glyphicon-plus"></i>
-                    New Record
-                </a>
-                <a href="#" class="btn btn-danger">
-                    <i class="glyphicon glyphicon-trash"></i>
-                    Delete All
-                    <span class="badge">{{main.rows.length}}</span>
-                </a>
-                <br />
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Actions</th>
-                            <th>Name</th>
-                            <th>Birthday</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                            <tr ng-repeat="row in main.rows">
-                                    <th scope="row" ng-if-start="!row.isEditing">
-                                        <div class="btn-group" role="group" aria-label="...">
-                                          <a href="" title="View" class="btn btn-default btn-xs ajax"><i class="glyphicon glyphicon-eye-open"></i></a>
-                                          <a ng-click="row.isEditing = true" title="Edit" class="btn btn-default btn-xs edit"><i class="glyphicon glyphicon-edit"></i></a>
-                                          <a ng-click="main.delete(row, $index)" title="Delete" class="btn btn-default btn-xs delete"><i class="glyphicon glyphicon-trash"></i></a>
-                                        </div>
-                                    </th>
-                                    <td>{{row.Name}}</td>
-                                    <td ng-if-end>{{row.Birthday}}</td>
-                                    <td ng-if-start="row.isEditing"><input type="text" name="Name" class="form-control" placeholder="Name" ng-model="row.Name" /></td>
-                                    <td><input type="text" name="Birthday" class="form-control" placeholder="Birthday" ng-model="row.Birthday" /></td>
-                                    <td ng-if-end>
-                                        <a ng-click="main.save(row, $index)" class="btn btn-primary" >Save</a>
-                                        <a ng-click="main.cancel(row, $index)" class="btn btn-default"/>Cancel</a>
-                                        <input type="hidden" name="id" value="{{row.id}}" /> 
-                                    </td>
-                            </tr>
-                    </tbody>
-                </table>
-            </div>
-=======
             <div ng-include="'index-tmpl'" ></div>
->>>>>>> jquery
             
     </div>
     
@@ -112,15 +64,6 @@
         <form class="form-horizontal" >
           <div class="modal-header">
             <a href="?" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></a>
-<<<<<<< HEAD
-            <h4 class="modal-title" >{{main.modalData.title}}</h4>
-          </div>
-        	<div class="modal-body" ng-bind-html="main.modalData.body">
-        	</div>
-        	<div class="modal-footer">
-        		<a href="?" class="btn btn-default" data-dismiss="modal" >Cancel </a>
-        		<input ng-click="main.modalData.confirm()" type="button" data-dismiss="modal" name="submit" class="btn btn-primary" value="Save changes" />
-=======
             <h4 class="modal-title" >{{vm.d.title}}</h4>
           </div>
         	<div class="modal-body">{{vm.d.body}}
@@ -128,94 +71,12 @@
         	<div class="modal-footer">
         		<a href="?" class="btn btn-default" data-dismiss="modal" >Cancel </a>
         		<input ng-click="vm.d.confirm()" type="submit" name="submit" class="btn btn-primary submit" value="Save changes" />
->>>>>>> jquery
         	</div>
         </form>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-<<<<<<< HEAD
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular.min.js"></script>
-    
-    <script type="text/javascript">
-        angular.module("app", [])
-        .controller("main", function($http, $sce){
-            var self = this;
-            
-            $http.get("/person").then(function(data){
-                self.rows = data.data;
-            });
-            
-            self.create = function(){
-                self.rows.push({isEditing: true})
-            }
-            self.cancel = function(row, index){
-                if(row.id){
-                    row.isEditing = false;
-                }else{
-                    self.rows.splice(index, 1);
-                }
-            }
-            self.save = function(row, index){
-                $http.post('/person', row  )
-                .success(function(data){
-                    data.isEditing = false;
-                    self.rows[index] = data;
-                }).error(function(data){
-                    alert(data.code);
-                });
-            }
-            
-            self.delete = function(row, index){
-                self.modalData = {
-                    title: "Delete a person",
-                    body: $sce.trustAsHtml( "<h5>Are you sure you want to delete " + row.Name + "?</h5>"),
-                    confirm: function(){
-                       $http.delete('/person/' + row.id)
-                        .success(function(data){
-                            self.rows.splice(index, 1);
-                        }).error(function(data){
-                            console.log(data);
-                            alert(data.code);
-                        });
-                    }
-                };
-                $("#myDialog").modal('show');
-            }
-           });
-    
-        $(function(){
-            var editTemplate = Handlebars.compile($("#edit-tmpl").html());
-            var indexTemplate = Handlebars.compile($("#index-tmpl").html());
-
-
-            $("#view").on("click", ".ajax", function(){
-                $.get(this.href).then(function(data){
-                    $("#myDialog .modal-content").html(data);
-                    $("#myDialog").modal('show');
-                });
-                return false;
-            });
-            $("#view").on("click", ".create", function(){
-                $("#myDialog .modal-title").html("Add a person");
-                $("#myDialog .modal-body").html(editTemplate({}));
-                $("#myDialog").modal('show');
-                $("#myDialog .modal-body .btn-primary").hide();
-                $("#myDialog .submit").one('click', function(){
-                    $.ajax({ url: '/person/', type: 'POST', data: $("#myDialog input").serialize() })
-                    .done(function(data){
-                        location.reload();
-                    }).fail(function(data){
-                        alert(data.responseJSON.code);
-                    });
-                    return false;
-                });
-                return false;
-=======
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.2/angular.min.js"></script>
     <script type="text/javascript">
         angular.module('app',[])
@@ -225,7 +86,6 @@
             $http.get("/person")
             .success(function(data){
                 self.rows = data;
->>>>>>> jquery
             });
             
             self.create = function(){
@@ -242,11 +102,6 @@
                 }).error(function(data){
                     alert(data.code);
                 });
-<<<<<<< HEAD
-                return false;
-            });
-     });
-=======
             }
             self.delete = function(row, index){
                 self.d = {
@@ -267,7 +122,6 @@
             
         });
         
->>>>>>> jquery
     </script>
     <script type="text/ng-template" id="index-tmpl" >
         <a class="btn btn-success" ng-click="vm.create()">
