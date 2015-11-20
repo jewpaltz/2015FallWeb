@@ -28,6 +28,10 @@ app.get("/person", function(req, res){
     return;
   }
   person.save(req.body, function(err, row){
+      if(err){
+        res.status(500).send(err);
+        return;
+      }
     res.send(row);
   })
 })
