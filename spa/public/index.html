@@ -31,7 +31,7 @@
             <ul class="nav navbar-nav">
               <li class="active"><a href="#/person">Person</a></li>
               <li><a href="#/food" >Food</a></li>
-              <li><a href="#" ng-click="vm.viewExercise()">Exercise</a></li>
+              <li><a href="#/exercise" >Exercise</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -82,51 +82,23 @@
                 templateUrl: 'views/food-details.html',
                 controller: 'foodDetails', controllerAs: 'vm'
               }).
+              when('/exercise', {
+                templateUrl: 'views/exercise-index.html',
+                controller: 'exercise', controllerAs: 'vm'
+              }).
+              when('/exercise/:id', {
+                templateUrl: 'views/exercise-details.html',
+                controller: 'exerciseDetails', controllerAs: 'vm'
+              }).
               otherwise({
                 redirectTo: '/person'
               });
-        })
-        .controller('person', function($http, alert, panel){
-            var self = this;
-            
-            $http.get("/person")
-            .success(function(data){
-                self.rows = data;
-            });
-            
-            self.create = function(){
-                self.rows.push({ isEditing: true });
-            }
-            self.edit = function(row, index){
-                row.isEditing = true;
-            }
-            self.save = function(row, index){
-                $http.post('/person/', row)
-                .success(function(data){
-                    data.isEditing = false;
-                    self.rows[index] = data;
-                }).error(function(data){
-                    alert.show(data.code);
-                });
-            }
-            self.delete = function(row, index){
-                panel.show( {
-                    title: "Delete a person",
-                    body: "Are you sure you want to delete " + row.Name + "?",
-                    confirm: function(){
-                        $http.delete('/person/' + row.id)
-                        .success(function(data){
-                            self.rows.splice(index, 1);
-                        }).error(function(data){
-                            alert.show(data.code);
-                        });
-                    }
-                });
-            }
-            
         });
         
     </script>
+    <script type="text/javascript" src="controllers/person.js"></script>
+    <script type="text/javascript" src="controllers/food.js"></script>
+    <script type="text/javascript" src="controllers/exercise.js"></script>
 
 
   </body>

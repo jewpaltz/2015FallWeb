@@ -1,0 +1,56 @@
+        <a class="btn btn-success" ng-click="vm.create()">
+            <i class="glyphicon glyphicon-plus"></i>
+            New Record
+        </a>
+        <a href="#" class="btn btn-danger">
+            <i class="glyphicon glyphicon-trash"></i>
+            Delete All
+            <span class="badge">{{vm.rows.length}}</span>
+        </a>
+        <br />
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>User</th>
+                    <th>Type</th>
+                    <th>Time</th>
+                    <th>Duration</th>
+                    <th>Intensity</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr ng-repeat="row in vm.rows">
+                        <td ng-if-start="!row.isEditing">{{row.Name}}</td>
+                        <td >{{row.PersonName}}</td>
+                        <td >{{row.TypeName}}</td>
+                        <td >{{row.Time}}</td>
+                        <td >{{row.Duration}}</td>
+                        <td >{{row.Intensity}}</td>
+                          <th ng-if-end scope="row">
+                            <div class="btn-group" role="group" aria-label="...">
+                              <a href="" title="View" class="btn btn-default btn-xs ajax"><i class="glyphicon glyphicon-eye-open"></i></a>
+                              <a ng-click="vm.edit(row, $index)" title="Edit" class="btn btn-default btn-xs edit"><i class="glyphicon glyphicon-edit"></i></a>
+                              <a ng-click="vm.delete(row, $index)" title="Delete" class="btn btn-default btn-xs delete"><i class="glyphicon glyphicon-trash"></i></a>
+                            </div>
+                          </th>
+                        
+                        <td ng-if-start="row.isEditing"><input type="text" name="Name" class="form-control" placeholder="Name" ng-model="row.Name" /></td>
+                        <td>
+                            <select ng-options="option.id as option.Name for option in vm.persons" ng-model="row.UserId" class="form-control"></select>
+                         </td>
+                        <td>
+                            <select ng-options="option.id as option.Name for option in vm.keywords" ng-model="row.TypeId" class="form-control"></select>
+                         </td>
+                        <td><input type="text" name="Time" class="form-control date-time" placeholder="Time" ng-model="row.Time" /></td>
+                        <td><input type="text" name="Duration" class="form-control" placeholder="Duration" ng-model="row.Duration" /></td>
+                        <td><input type="text" name="Intensity" class="form-control" placeholder="Intensity" ng-model="row.Intensity" /></td>
+                        <td ng-if-end>
+                            <input type="button" value="Save" class="btn btn-primary btn-sm submit" ng-click="vm.save(row, $index)"/>
+                            <input type="button" value="Cancel" class="btn btn-default btn-sm submit" ng-click="row.isEditing = false"/>
+                        </td>
+                       
+                       
+                    </tr>
+            </tbody>
+        </table>

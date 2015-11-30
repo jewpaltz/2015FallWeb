@@ -1,0 +1,13 @@
+<div class="panel panel-primary" ng-if="vm.state" >
+    <div class="panel-heading">
+            <button ng-click="vm.state = null" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{vm.state.title}}
+    </div>
+    <div class="panel-body">
+        {{vm.state.body}}
+    </div>
+    <div class="panel-footer">
+    	<a class="btn btn-default" ng-click="vm.state = null">Cancel </a>
+    	<input ng-click="vm.state.confirm()" type="submit" name="submit" class="btn btn-primary submit" value="Save changes" />
+    </div>
+</div>
